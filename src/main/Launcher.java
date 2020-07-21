@@ -1,13 +1,15 @@
 package main;
 
 
-import main.game.TRE;
+import main.game.GameConstants;
+import main.game.GameSetup;
 import main.menus.EndGamePanel;
 import main.menus.StartMenuPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class Launcher {
 
@@ -30,7 +32,7 @@ public class Launcher {
      * run long running loops(or tasks) on Java Swing's main thread. This thread is
      * called the event dispatch thread.
      */
-    private TRE gamePanel;
+    private GameSetup gamePanel;
     /*
      * end panel is used to show the end game panel.  it will contain
      * two buttons restart and exit.
@@ -54,10 +56,10 @@ public class Launcher {
         this.jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // when the GUI is closed, this will also shutdown the VM
     }
 
-    private void initUIComponents(){
+    private void initUIComponents() throws IOException {
         this.mainPanel = new JPanel(); // create a new main panel
         this.startPanel = new StartMenuPanel(this); // create a new start panel
-        this.gamePanel = new TRE(this); // create a new game panel
+        this.gamePanel = new GameSetup(this); // create a new game panel
         this.gamePanel.gameInitialize(); // initialize game, but DO NOT start game
         this.endPanel = new EndGamePanel(this); // create a new end game pane;
         cl = new CardLayout(); // creating a new CardLayout Panel
@@ -79,7 +81,7 @@ public class Launcher {
                 break;
             case "game":
                 // set the size of the jFrame to the expected size for the game panel
-                this.jf.setSize(GameConstants.GAME_SCREEN_WIDTH,GameConstants.GAME_SCREEN_HEIGHT);
+                this.jf.setSize(GameConstants.GAME_SCREEN_WIDTH + 15,GameConstants.GAME_SCREEN_HEIGHT + 30);
                 //start a new thread for the game to run. This will ensure our JFrame is responsive and
                 // not stuck executing the game loop.
                 (new Thread(this.gamePanel)).start();
@@ -103,7 +105,7 @@ public class Launcher {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Launcher launch = new Launcher();
         launch.initUIComponents();
     }

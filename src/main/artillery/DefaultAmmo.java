@@ -1,6 +1,6 @@
 package main.artillery;
 
-import main.GameConstants;
+import main.game.GameConstants;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

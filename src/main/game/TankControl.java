@@ -52,7 +52,7 @@ public class TankControl implements KeyListener {
         if (keyPressed == right) {
             this.t1.toggleRightPressed();
         }
-        if (keyPressed == shoot && TRE.tick % 20 == 0) {
+        if (keyPressed == shoot) {
             this.t1.toggleShootPressed();
         }
         

@@ -2,8 +2,6 @@ package main.game;
 
 import main.artillery.*;
 
-import main.GameConstants;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -22,6 +20,7 @@ public class Tank{
     private int vy;
     private float angle;
     private ArrayList<DefaultAmmo> ammo;
+    private Rectangle hitbox;
 
     private final int R = 2;
     private final float ROTATIONSPEED = 3.0f;
@@ -36,7 +35,6 @@ public class Tank{
     private boolean ShootPressed;
 
 
-
     Tank(int x, int y, int vx, int vy, int angle, BufferedImage img) {
         this.x = x;
         this.y = y;
@@ -45,7 +43,12 @@ public class Tank{
         this.img = img;
         this.angle = angle;
         this.ammo = new ArrayList<>();
+        this.hitbox = new Rectangle(x, y, this.img.getWidth(), this.img.getHeight());
 
+    }
+
+    public Rectangle getHitbox() {
+        return  hitbox.getBounds();
     }
 
     void setX(int x){ this.x = x; }
@@ -101,9 +104,12 @@ public class Tank{
         if (this.RightPressed) {
             this.rotateRight();
         }
-        if (this.ShootPressed) {
+        if (this.ShootPressed && GameSetup.tick % 30 == 0) {
             this.shoot();
         }
+//        if (collisionDetected(hitbox)){
+//
+//        }
         this.ammo.forEach(DefaultAmmo -> DefaultAmmo.update());
     }
 
@@ -121,6 +127,7 @@ public class Tank{
         x -= vx;
         y -= vy;
         checkBorder();
+        this.hitbox.setLocation(x,y);
     }
 
     private void moveForwards() {
@@ -129,6 +136,7 @@ public class Tank{
         x += vx;
         y += vy;
         checkBorder();
+        this.hitbox.setLocation(x,y);
     }
 
     private void shoot() {
@@ -152,6 +160,9 @@ public class Tank{
         }
     }
 
+    public boolean collisionDetected(Rectangle rec){
+        return this.getHitbox().intersects(rec.getBounds());
+    }
     @Override
     public String toString() {
         return "x=" + x + ", y=" + y + ", angle=" + angle;

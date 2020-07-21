@@ -1,6 +1,6 @@
 package main.menus;
 
-import main.GameConstants;
+import main.game.GameConstants;
 import main.Launcher;
 
 import javax.swing.*;
