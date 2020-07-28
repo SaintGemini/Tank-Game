@@ -42,7 +42,11 @@ public class GameSetup extends JPanel implements Runnable {
        try {
            //this.resetGame();
            while (true) {
-                this.gameObjects.forEach(gameObject -> gameObject.update());
+               if (Tank.endGame) {
+                   this.lf.setFrame("end");
+                   return;
+               }
+                this.gameObjects.forEach(GameObject::update);
                 this.repaint();   // redraw game
                 tick++;
 //               if(t1.getHitbox().intersects()){

@@ -30,6 +30,8 @@ public class Tank extends GameObject {
     private final float ROTATIONSPEED = 3.0f;
 
     public static int lifepoints = 3;
+    public int lives = 3;
+    public static boolean endGame = false;
 
     private BufferedImage img;
     private boolean UpPressed;
@@ -97,6 +99,10 @@ public class Tank extends GameObject {
     void unToggleShootPressed() { this.ShootPressed = false; }
 
     public void update() {
+        if (this.lives == 0) {
+            System.out.println("Game over");
+            endGame = true;
+        }
         if (this.UpPressed) {
             this.moveForwards();
         }
@@ -112,13 +118,21 @@ public class Tank extends GameObject {
         if (this.ShootPressed && GameSetup.tick % 30 == 0) {
             this.shoot();
         }
-        if (lifepoints == 0 && this.img == GameConstants.blue_tank){
-            lifepoints = 3;
+        if (this.lifepoints == 0 && this.img == GameConstants.blue_tank){
+            this.lives--;
+            this.lifepoints = 3;
+            this.setX(400);
+            this.setY(400);
+        }
+        if (this.lifepoints == 0 && this.img == GameConstants.red_tank){
+            this.lives--;
+            this.lifepoints = 3;
             this.setX(100);
             this.setY(100);
         }
-        this.ammo.forEach(DefaultAmmo -> DefaultAmmo.update());
-        checkCollision();
+
+        this.ammo.forEach(DefaultAmmo::update);
+        checkBulletCollision();
 
     }
 
@@ -175,14 +189,15 @@ public class Tank extends GameObject {
 
     }
 
-    public void checkCollision(){
+
+    public void checkBulletCollision(){
         Iterator itr = ammo.iterator();
         while(itr.hasNext()){
             DefaultAmmo bullet = (DefaultAmmo) itr.next();
             if (bullet.checkBorder()) itr.remove();
             if (DefaultAmmo.getHitbox().intersects(Tank.getHitbox())){
                 System.out.println("Hit me!");
-                //this.lifepoints -= 1;
+                lifepoints -= 1;
                 itr.remove();
             }
 
@@ -220,7 +235,7 @@ public class Tank extends GameObject {
         g2d.drawImage(this.img, rotation, null);
         this.ammo.forEach(DefaultAmmo -> DefaultAmmo.drawImage(g));
         g2d.setColor(Color.RED);
-        //g2d.drawRect(x, y, this.img.getWidth(), this.img.getHeight());
+        g2d.drawRect(x, y, this.img.getWidth(), this.img.getHeight());
     }
 
 

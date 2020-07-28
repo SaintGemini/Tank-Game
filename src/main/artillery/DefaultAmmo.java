@@ -60,8 +60,11 @@ public class DefaultAmmo extends GameObject {
     }
 
     public void update(){
+//        if(!Collision()) {
+//            moveForwards();
+//        }
         moveForwards();
-        //Collision();
+
     }
 
     public boolean checkBorder() {
@@ -81,17 +84,6 @@ public class DefaultAmmo extends GameObject {
     }
     public static Rectangle getHitbox() {
         return  hitbox.getBounds();
-    }
-
-    public boolean Collision(){
-        checkBorder();
-
-
-
-
-
-        //System.out.println(Tank.getHitbox().intersects(getHitbox()));
-        return false;
     }
 
     public void drawImage(Graphics g) {
