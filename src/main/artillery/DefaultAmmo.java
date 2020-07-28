@@ -1,25 +1,34 @@
 package main.artillery;
 
+import main.GameObject.GameObject;
 import main.game.GameConstants;
+import main.game.Tank;
+import main.mapLayout.UnbreakableWall;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class DefaultAmmo {
+public class DefaultAmmo extends GameObject {
     // instance variables
     int x_pos, y_pos, x_vel, y_vel, fire_angle;
     int R = 5;
     BufferedImage img;
-    Rectangle hitbox;
+    private static Rectangle hitbox;
+
+//    public DefaultAmmo(int x, int y, BufferedImage image){
+//        super(x, y, image);
+//
+//    }
 
     // constructor
     public DefaultAmmo(int x_position, int y_position, int angle, BufferedImage image){
+        super(x_position, y_position, image);
         x_pos = x_position;
         y_pos = y_position;
         fire_angle = angle;
         img = image;
-        hitbox = new Rectangle(x_pos, y_pos, 20, 20);
+        this.hitbox = new Rectangle(x_pos, y_pos, this.img.getWidth(), this.img.getHeight());
     }
 
     void setX_pos(int x) {
@@ -41,30 +50,48 @@ public class DefaultAmmo {
     void setImg(BufferedImage image) {
         img = image;
     }
+
     public void moveForwards() {
         x_vel = (int) Math.round(R * Math.cos(Math.toRadians(fire_angle)));
         y_vel = (int) Math.round(R * Math.sin(Math.toRadians(fire_angle)));
         x_pos += x_vel;
         y_pos += y_vel;
+        this.hitbox.setLocation(x_pos, y_pos);
     }
 
     public void update(){
         moveForwards();
+        //Collision();
     }
 
-    private void checkBorder() {
+    public boolean checkBorder() {
         if (x_pos < 30) {
-            x_pos = 30;
+            return true;
         }
-        if (x_pos >= GameConstants.GAME_SCREEN_WIDTH - 88) {
-            x_pos = GameConstants.GAME_SCREEN_WIDTH - 88;
+        if (x_pos >= GameConstants.GAME_SCREEN_WIDTH - 50) {
+            return true;
         }
-        if (y_pos < 40) {
-            y_pos = 40;
+        if (y_pos < 30) {
+            return true;
         }
-        if (y_pos >= GameConstants.GAME_SCREEN_HEIGHT - 80) {
-            y_pos = GameConstants.GAME_SCREEN_HEIGHT - 80;
+        if (y_pos >= GameConstants.GAME_SCREEN_HEIGHT - 50) {
+            return true;
         }
+        return false;
+    }
+    public static Rectangle getHitbox() {
+        return  hitbox.getBounds();
+    }
+
+    public boolean Collision(){
+        checkBorder();
+
+
+
+
+
+        //System.out.println(Tank.getHitbox().intersects(getHitbox()));
+        return false;
     }
 
     public void drawImage(Graphics g) {

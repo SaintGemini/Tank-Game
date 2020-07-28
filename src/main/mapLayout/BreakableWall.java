@@ -6,4 +6,9 @@ public class BreakableWall extends Wall{
     public BreakableWall(int x, int y, BufferedImage image) {
         super(x, y, image);
     }
+
+    @Override
+    public void update() {
+
+    }
 }
