@@ -4,6 +4,7 @@ package main;
 import main.game.GameConstants;
 import main.game.GameSetup;
 import main.menus.EndGamePanel;
+import main.menus.SidePanel;
 import main.menus.StartMenuPanel;
 
 import javax.swing.*;
@@ -81,7 +82,7 @@ public class Launcher {
                 break;
             case "game":
                 // set the size of the jFrame to the expected size for the game panel
-                this.jf.setSize(GameConstants.GAME_SCREEN_WIDTH + 15,GameConstants.GAME_SCREEN_HEIGHT + 30);
+                this.jf.setSize(GameConstants.SCREEN_WIDTH + 15,GameConstants.SCREEN_HEIGHT + 30);
                 //start a new thread for the game to run. This will ensure our JFrame is responsive and
                 // not stuck executing the game loop.
                 (new Thread(this.gamePanel)).start();

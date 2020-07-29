@@ -219,9 +219,6 @@ public class Tank extends GameObject {
         }
     }
 
-    public boolean collisionDetected(Rectangle rec){
-        return this.getHitbox().intersects(rec.getBounds());
-    }
     @Override
     public String toString() {
         return "x=" + x + ", y=" + y + ", angle=" + angle;

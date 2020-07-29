@@ -16,11 +16,6 @@ public class DefaultAmmo extends GameObject {
     BufferedImage img;
     private static Rectangle hitbox;
 
-//    public DefaultAmmo(int x, int y, BufferedImage image){
-//        super(x, y, image);
-//
-//    }
-
     // constructor
     public DefaultAmmo(int x_position, int y_position, int angle, BufferedImage image){
         super(x_position, y_position, image);
@@ -60,11 +55,7 @@ public class DefaultAmmo extends GameObject {
     }
 
     public void update(){
-//        if(!Collision()) {
-//            moveForwards();
-//        }
         moveForwards();
-
     }
 
     public boolean checkBorder() {

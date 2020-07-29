@@ -11,6 +11,7 @@ import main.Launcher;
 import main.artillery.DefaultAmmo;
 import main.mapLayout.BreakableWall;
 import main.mapLayout.UnbreakableWall;
+import main.menus.SidePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 public class GameSetup extends JPanel implements Runnable {
 
     private BufferedImage world;
+    private BufferedImage miniworld;
+    private SidePanel sidePanel;
     private Launcher lf;
     static long tick = 0;
     ArrayList<GameObject> gameObjects;
@@ -103,6 +106,13 @@ public class GameSetup extends JPanel implements Runnable {
         this.world = new BufferedImage(GameConstants.GAME_SCREEN_WIDTH,
                                        GameConstants.GAME_SCREEN_HEIGHT,
                                        BufferedImage.TYPE_INT_RGB);
+        this.miniworld = new BufferedImage(GameConstants.MINIMAP_SCREEN_WIDTH,
+                GameConstants.MINIMAP_SCREEN_HEIGHT,
+                BufferedImage.TYPE_INT_RGB);
+
+//        this.sidePanel = new SidePanel(lf);
+//        sidePanel.setBounds(1261, 0, GameConstants.MINIMAP_SCREEN_WIDTH, GameConstants.MINIMAP_SCREEN_HEIGHT);
+//        sidePanel.setBackground(Color.BLACK);
         try {
             gameObjects = new ArrayList<>();
             InputStreamReader isr = new InputStreamReader(GameSetup.class.getResourceAsStream("/resources/WorldMap"));
@@ -157,6 +167,7 @@ public class GameSetup extends JPanel implements Runnable {
         buffer.fillRect(0,0,GameConstants.SCREEN_WIDTH,GameConstants.SCREEN_HEIGHT);
         this.gameObjects.forEach(gameObject -> gameObject.drawImage(buffer));
         g2.drawImage(world,0,0,null);
+        g2.drawImage(world, 1260, 0, GameConstants.MINIMAP_SCREEN_WIDTH, GameConstants.MINIMAP_SCREEN_HEIGHT, null);
     }
 
 }

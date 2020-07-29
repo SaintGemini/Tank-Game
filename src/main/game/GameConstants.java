@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class GameConstants {
-    public static final int SCREEN_WIDTH = 1500;
-    public static final int SCREEN_HEIGHT = 1000;
+    public static final int SCREEN_WIDTH = 1575;
+    public static final int SCREEN_HEIGHT = 660;
+    public static final int MINIMAP_SCREEN_WIDTH = 315; // 1/4 of game screen
+    public static final int MINIMAP_SCREEN_HEIGHT = 165; // 1/4 of game screen
     public static final int GAME_SCREEN_WIDTH = 1260; // 42
     public static final int GAME_SCREEN_HEIGHT = 660; // 22
 
