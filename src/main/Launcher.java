@@ -34,6 +34,7 @@ public class Launcher {
      * called the event dispatch thread.
      */
     private GameSetup gamePanel;
+    private SidePanel sidePanel;
     /*
      * end panel is used to show the end game panel.  it will contain
      * two buttons restart and exit.
@@ -62,12 +63,14 @@ public class Launcher {
         this.startPanel = new StartMenuPanel(this); // create a new start panel
         this.gamePanel = new GameSetup(this); // create a new game panel
         this.gamePanel.gameInitialize(); // initialize game, but DO NOT start game
+        //this.sidePanel = new SidePanel();
         this.endPanel = new EndGamePanel(this); // create a new end game pane;
         cl = new CardLayout(); // creating a new CardLayout Panel
         this.jf.setResizable(false); //make the JFrame not resizable
         this.mainPanel.setLayout(cl); // set the layout of the main panel to our card layout
         this.mainPanel.add(startPanel, "start"); //add the start panel to the main panel
         this.mainPanel.add(gamePanel, "game");   //add the game panel to the main panel
+        //this.mainPanel.add(sidePanel, "side");
         this.mainPanel.add(endPanel, "end");    // add the end game panel to the main panel
         this.jf.add(mainPanel); // add the main panel to the JFrame
         this.setFrame("start"); // set the current panel to start panel
@@ -83,6 +86,7 @@ public class Launcher {
             case "game":
                 // set the size of the jFrame to the expected size for the game panel
                 this.jf.setSize(GameConstants.SCREEN_WIDTH + 15,GameConstants.SCREEN_HEIGHT + 30);
+                //this.jf.add(sidePanel);
                 //start a new thread for the game to run. This will ensure our JFrame is responsive and
                 // not stuck executing the game loop.
                 (new Thread(this.gamePanel)).start();

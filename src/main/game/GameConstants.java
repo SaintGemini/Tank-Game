@@ -23,10 +23,14 @@ public class GameConstants {
     public static Image tankImage = null;
     public static BufferedImage blue_tank = null;
     public static BufferedImage red_tank = null;
+    public static BufferedImage red_tank2 = null;
+
     public static BufferedImage blue_missile = null;
     public static BufferedImage red_missile = null;
     public static BufferedImage unbreakable_wall = null;
     public static BufferedImage breakable_wall = null;
+    public static BufferedImage wallpaper = null;
+    public static BufferedImage life = null;
 
     static {
         try {
@@ -34,10 +38,13 @@ public class GameConstants {
             tankImage = ImageIO.read(new File("src/resources/tank1.png"));
             blue_tank = ImageIO.read((new File("src/resources/blue_tank.png")));
             red_tank = ImageIO.read((new File("src/resources/red_tank.png")));
+            red_tank2 = ImageIO.read((new File("src/resources/red_tank2.png")));
             blue_missile = ImageIO.read((new File("src/resources/blue_missile.jpg")));
             red_missile = ImageIO.read((new File("src/resources/red_missile.jpg")));
             unbreakable_wall = ImageIO.read(new File( "src/resources/unbreakable_wall.jpg"));
             breakable_wall = ImageIO.read(new File("src/resources/breakable_wall.jpg"));
+            wallpaper = ImageIO.read(new File("src/resources/wallpaper.jpg"));
+            life = ImageIO.read(new File("src/resources/heart2.png"));
 
         } catch (IOException e) {
             e.printStackTrace();

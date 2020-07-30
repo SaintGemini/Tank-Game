@@ -11,6 +11,7 @@ import main.Launcher;
 import main.artillery.DefaultAmmo;
 import main.mapLayout.BreakableWall;
 import main.mapLayout.UnbreakableWall;
+import main.mapLayout.Wall;
 import main.menus.SidePanel;
 
 import javax.swing.*;
@@ -35,6 +36,7 @@ public class GameSetup extends JPanel implements Runnable {
     private Launcher lf;
     static long tick = 0;
     ArrayList<GameObject> gameObjects;
+    ArrayList<Tank> tanks;
 
     public GameSetup(Launcher lf){
         this.lf = lf;
@@ -50,15 +52,9 @@ public class GameSetup extends JPanel implements Runnable {
                    return;
                }
                 this.gameObjects.forEach(GameObject::update);
+                this.sidePanel = new SidePanel(tanks.get(0), tanks.get(1));
                 this.repaint();   // redraw game
                 tick++;
-//               if(t1.getHitbox().intersects()){
-//                   System.out.println("Collision detected.");
-//               }
-//               if(t1.collisionDetected()){
-//                   System.out.println("Yes");
-//               }
-
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
                 /*
                  * simulate an end game event
@@ -106,15 +102,12 @@ public class GameSetup extends JPanel implements Runnable {
         this.world = new BufferedImage(GameConstants.GAME_SCREEN_WIDTH,
                                        GameConstants.GAME_SCREEN_HEIGHT,
                                        BufferedImage.TYPE_INT_RGB);
-        this.miniworld = new BufferedImage(GameConstants.MINIMAP_SCREEN_WIDTH,
-                GameConstants.MINIMAP_SCREEN_HEIGHT,
-                BufferedImage.TYPE_INT_RGB);
 
-//        this.sidePanel = new SidePanel(lf);
-//        sidePanel.setBounds(1261, 0, GameConstants.MINIMAP_SCREEN_WIDTH, GameConstants.MINIMAP_SCREEN_HEIGHT);
-//        sidePanel.setBackground(Color.BLACK);
+        //sidePanel.drawLifePoints();
+
         try {
             gameObjects = new ArrayList<>();
+            tanks = new ArrayList<>();
             InputStreamReader isr = new InputStreamReader(GameSetup.class.getResourceAsStream("/resources/WorldMap"));
             BufferedReader mapReader = new BufferedReader(isr);
 
@@ -148,11 +141,15 @@ public class GameSetup extends JPanel implements Runnable {
         Tank t1 = new Tank(300, 300, 0, 0, 0, GameConstants.red_tank);
         Tank t2 = new Tank(500, 500, 0, 0, 180, GameConstants.blue_tank);
 
+        this.sidePanel = new SidePanel(t1, t2);
+
         TankControl tc1 = new TankControl(t1, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         TankControl tc2 = new TankControl(t2, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
 
         this.gameObjects.add(t1);
         this.gameObjects.add(t2);
+        this.tanks.add(t1);
+        this.tanks.add(t2);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc1);
         this.lf.getJf().addKeyListener(tc2);
@@ -168,6 +165,7 @@ public class GameSetup extends JPanel implements Runnable {
         this.gameObjects.forEach(gameObject -> gameObject.drawImage(buffer));
         g2.drawImage(world,0,0,null);
         g2.drawImage(world, 1260, 0, GameConstants.MINIMAP_SCREEN_WIDTH, GameConstants.MINIMAP_SCREEN_HEIGHT, null);
+        g2.drawImage(sidePanel.getSidePanel(), 1260, GameConstants.MINIMAP_SCREEN_HEIGHT, GameConstants.MINIMAP_SCREEN_WIDTH, 495, null);
     }
 
 }

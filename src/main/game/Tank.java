@@ -29,7 +29,7 @@ public class Tank extends GameObject {
     private final int R = 2;
     private final float ROTATIONSPEED = 3.0f;
 
-    public static int lifepoints = 3;
+    public int lifepoints;
     public int lives = 3;
     public static boolean endGame = false;
 
@@ -51,6 +51,7 @@ public class Tank extends GameObject {
         this.angle = angle;
         this.ammo = new ArrayList<>();
         this.hitbox = new Rectangle(x, y, this.img.getWidth(), this.img.getHeight());
+        this.lifepoints = 3;
 
     }
 
@@ -165,7 +166,7 @@ public class Tank extends GameObject {
         x += vx;
         y += vy;
         checkBorder();
-        this.hitbox.setLocation(x,y);
+        hitbox.setLocation(x,y);
     }
 
     private void shoot() {
@@ -195,9 +196,12 @@ public class Tank extends GameObject {
         while(itr.hasNext()){
             DefaultAmmo bullet = (DefaultAmmo) itr.next();
             if (bullet.checkBorder()) itr.remove();
+//            if (DefaultAmmo.getHitbox().intersects(Wall.getHitbox())){
+//                System.out.println("Hit a wall");
+//            }
             if (DefaultAmmo.getHitbox().intersects(Tank.getHitbox())){
                 System.out.println("Hit me!");
-                lifepoints -= 1;
+                lifepoints--;
                 itr.remove();
             }
 
@@ -217,6 +221,19 @@ public class Tank extends GameObject {
         if (y >= GameConstants.GAME_SCREEN_HEIGHT - 80) {
             y = GameConstants.GAME_SCREEN_HEIGHT - 80;
         }
+    }
+
+
+    public int getLifePoints(){
+        return this.lifepoints;
+    }
+
+    public void setLifepoints(int x) {
+        this.lifepoints = x;
+    }
+
+    public BufferedImage getImg(){
+        return this.img;
     }
 
     @Override

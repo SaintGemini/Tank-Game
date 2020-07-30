@@ -55,6 +55,7 @@ public class DefaultAmmo extends GameObject {
     }
 
     public void update(){
+
         moveForwards();
     }
 
