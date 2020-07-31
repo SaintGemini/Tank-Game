@@ -31,6 +31,7 @@ public class GameConstants {
     public static BufferedImage breakable_wall = null;
     public static BufferedImage wallpaper = null;
     public static BufferedImage life = null;
+    public static BufferedImage health = null;
 
     static {
         try {
@@ -45,6 +46,7 @@ public class GameConstants {
             breakable_wall = ImageIO.read(new File("src/resources/breakable_wall.jpg"));
             wallpaper = ImageIO.read(new File("src/resources/wallpaper.jpg"));
             life = ImageIO.read(new File("src/resources/heart2.png"));
+            health = ImageIO.read(new File("src/resources/blood_red_bar2.png"));
 
         } catch (IOException e) {
             e.printStackTrace();

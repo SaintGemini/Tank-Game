@@ -23,13 +23,15 @@ public class Tank extends GameObject {
     private int vx;
     private int vy;
     private float angle;
-    private ArrayList<DefaultAmmo> ammo;
-    private static Rectangle hitbox;
+    private final ArrayList<DefaultAmmo> ammo;
+    public static Rectangle hitbox;
 
     private final int R = 2;
     private final float ROTATIONSPEED = 3.0f;
 
-    public int lifepoints;
+    public static int lifepoints;
+    public static int blue_lifepoints = 1;
+    public static int red_lifepoints = 1;
     public int lives = 3;
     public static boolean endGame = false;
 
@@ -50,18 +52,37 @@ public class Tank extends GameObject {
         this.img = img;
         this.angle = angle;
         this.ammo = new ArrayList<>();
-        this.hitbox = new Rectangle(x, y, this.img.getWidth(), this.img.getHeight());
-        this.lifepoints = 3;
+        hitbox = new Rectangle(x, y, this.img.getWidth(), this.img.getHeight());
+        if (this.img == GameConstants.blue_tank) {
+            blue_lifepoints = 3;
+        } else {
+            red_lifepoints = 3;
+        }
 
     }
 
-    public static Rectangle getHitbox() {
-        return  hitbox.getBounds();
+//    public Rectangle getHitbox() {
+//        return  hitbox.getBounds();
+//    }
+    public void hitWall(){
+        this.setVx(this.getVx()*-1);
     }
 
-    void setX(int x){ this.x = x; }
+//    public BufferedImage getImg(){
+//        return  this.img;
+//    }
+
+    public void setX(int x){ this.x = x; }
+
+    public int getVx() {
+        return this.vx;
+    }
+    public void setVx(int x) {
+       this.vx = x;
+    }
 
     void setY(int y) { this. y = y;}
+
 
     void toggleUpPressed() {
         this.UpPressed = true;
@@ -119,20 +140,20 @@ public class Tank extends GameObject {
         if (this.ShootPressed && GameSetup.tick % 30 == 0) {
             this.shoot();
         }
-        if (this.lifepoints == 0 && this.img == GameConstants.blue_tank){
+        if (blue_lifepoints == 0){
             this.lives--;
-            this.lifepoints = 3;
+            blue_lifepoints = 3;
             this.setX(400);
             this.setY(400);
         }
-        if (this.lifepoints == 0 && this.img == GameConstants.red_tank){
+        if (red_lifepoints == 0){
             this.lives--;
-            this.lifepoints = 3;
+            red_lifepoints = 3;
             this.setX(100);
             this.setY(100);
         }
 
-        this.ammo.forEach(DefaultAmmo::update);
+        ammo.forEach(DefaultAmmo::update);
         checkBulletCollision();
 
     }
@@ -151,13 +172,13 @@ public class Tank extends GameObject {
         this.angle += this.ROTATIONSPEED;
     }
 
-    private void moveBackwards() {
+    public void moveBackwards() {
         vx = (int) Math.round(R * Math.cos(Math.toRadians(angle)));
         vy = (int) Math.round(R * Math.sin(Math.toRadians(angle)));
         x -= vx;
         y -= vy;
         checkBorder();
-        this.hitbox.setLocation(x,y);
+        hitbox.setLocation(x,y);
     }
 
     private void moveForwards() {
@@ -196,17 +217,17 @@ public class Tank extends GameObject {
         while(itr.hasNext()){
             DefaultAmmo bullet = (DefaultAmmo) itr.next();
             if (bullet.checkBorder()) itr.remove();
-//            if (DefaultAmmo.getHitbox().intersects(Wall.getHitbox())){
-//                System.out.println("Hit a wall");
-//            }
-            if (DefaultAmmo.getHitbox().intersects(Tank.getHitbox())){
+            if (bullet.collisionDetected(this)){
                 System.out.println("Hit me!");
-                lifepoints--;
                 itr.remove();
             }
 
         } // end while
     } // end checkCollision
+
+//    public static void reduceLifePoints(){
+//        Tank.lifepoints--;
+//    }
 
     private void checkBorder() {
         if (x < 30) {
@@ -233,7 +254,7 @@ public class Tank extends GameObject {
     }
 
     public BufferedImage getImg(){
-        return this.img;
+        return img;
     }
 
     @Override

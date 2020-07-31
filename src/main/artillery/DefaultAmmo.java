@@ -4,6 +4,7 @@ import main.GameObject.GameObject;
 import main.game.GameConstants;
 import main.game.Tank;
 import main.mapLayout.UnbreakableWall;
+import main.mapLayout.Wall;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -14,7 +15,7 @@ public class DefaultAmmo extends GameObject {
     int x_pos, y_pos, x_vel, y_vel, fire_angle;
     int R = 5;
     BufferedImage img;
-    private static Rectangle hitbox;
+    public static Rectangle hitbox;
 
     // constructor
     public DefaultAmmo(int x_position, int y_position, int angle, BufferedImage image){
@@ -23,7 +24,7 @@ public class DefaultAmmo extends GameObject {
         y_pos = y_position;
         fire_angle = angle;
         img = image;
-        this.hitbox = new Rectangle(x_pos, y_pos, this.img.getWidth(), this.img.getHeight());
+        hitbox = new Rectangle(x_pos, y_pos, this.img.getWidth(), this.img.getHeight());
     }
 
     void setX_pos(int x) {
@@ -51,7 +52,7 @@ public class DefaultAmmo extends GameObject {
         y_vel = (int) Math.round(R * Math.sin(Math.toRadians(fire_angle)));
         x_pos += x_vel;
         y_pos += y_vel;
-        this.hitbox.setLocation(x_pos, y_pos);
+        hitbox.setLocation(x_pos, y_pos);
     }
 
     public void update(){
@@ -74,8 +75,19 @@ public class DefaultAmmo extends GameObject {
         }
         return false;
     }
-    public static Rectangle getHitbox() {
-        return  hitbox.getBounds();
+
+    public boolean collisionDetected(Tank t){
+        if (hitbox.intersects(t.hitbox)){
+            if (t.getImg() == GameConstants.blue_tank){
+                Tank.red_lifepoints--;
+                System.out.println("Blue tank");
+            } else {
+                Tank.blue_lifepoints--;
+            }
+            System.out.println("doesnt burn");
+            return true;
+        }
+        return false;
     }
 
     public void drawImage(Graphics g) {
