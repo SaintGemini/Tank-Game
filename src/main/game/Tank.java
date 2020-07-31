@@ -2,8 +2,7 @@ package main.game;
 
 import main.GameObject.GameObject;
 import main.artillery.*;
-import main.mapLayout.UnbreakableWall;
-import main.mapLayout.Wall;
+import main.collision.CollisionHandler;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -17,22 +16,29 @@ import java.util.Iterator;
  */
 public class Tank extends GameObject {
 
+    private CollisionHandler collisionHandler;
+
 
     private int x;
     private int y;
     private int vx;
     private int vy;
+    private static int x_pos;
+    private static int y_pos;
     private float angle;
-    private final ArrayList<DefaultAmmo> ammo;
-    public static Rectangle hitbox;
+    public final ArrayList<DefaultAmmo> ammo;
+    public Rectangle hitbox;
 
     private final int R = 2;
     private final float ROTATIONSPEED = 3.0f;
 
-    public static int lifepoints;
+    public int lifepoints;
     public static int blue_lifepoints = 1;
     public static int red_lifepoints = 1;
-    public int lives = 3;
+    public int lives;
+    public int identifier = 0;
+    public static int blue_identifier ;
+    public static int red_identifier;
     public static boolean endGame = false;
 
     private BufferedImage img;
@@ -42,47 +48,69 @@ public class Tank extends GameObject {
     private boolean LeftPressed;
     private boolean ShootPressed;
 
+    public static boolean wallHit = false;
+    public static boolean blueWall = false;
+    public static boolean redWall = false;
+    private boolean collision;
 
-    Tank(int x, int y, int vx, int vy, int angle, BufferedImage img) {
+
+    Tank(int x, int y, int vx, int vy, int angle, BufferedImage img, int identifier) {
         super(x, y, img);
         this.x = x;
         this.y = y;
+        x_pos = this.x;
+        y_pos = this.y;
         this.vx = vx;
         this.vy = vy;
         this.img = img;
         this.angle = angle;
         this.ammo = new ArrayList<>();
         hitbox = new Rectangle(x, y, this.img.getWidth(), this.img.getHeight());
+        this.identifier = identifier;
         if (this.img == GameConstants.blue_tank) {
             blue_lifepoints = 3;
-        } else {
+            blue_identifier = 2;
+        } else if (this.img == GameConstants.red_tank) {
             red_lifepoints = 3;
+            red_identifier = 1;
         }
-
+        collisionHandler = new CollisionHandler(this);
+        lifepoints = 3;
+        lives = 3;
     }
 
 //    public Rectangle getHitbox() {
 //        return  hitbox.getBounds();
 //    }
-    public void hitWall(){
-        this.setVx(this.getVx()*-1);
+    public int getIdentifier(){
+        return this.identifier;
     }
 
 //    public BufferedImage getImg(){
 //        return  this.img;
 //    }
 
-    public void setX(int x){ this.x = x; }
+
+    public void setY(int y){ this.y = y;}
+    public int getY() { return y; }
+
+    public int getX() {
+        return x;
+    }
 
     public int getVx() {
-        return this.vx;
+        return vx;
     }
     public void setVx(int x) {
        this.vx = x;
     }
 
-    void setY(int y) { this. y = y;}
-
+    public int getVy() {
+        return vy;
+    }
+    public void setVy(int y) {
+        this.vy = y;
+    }
 
     void toggleUpPressed() {
         this.UpPressed = true;
@@ -120,11 +148,48 @@ public class Tank extends GameObject {
 
     void unToggleShootPressed() { this.ShootPressed = false; }
 
+    public void toggleCollision() { this.collision = true; }
+
     public void update() {
         if (this.lives == 0) {
             System.out.println("Game over");
             endGame = true;
         }
+
+        //this.wallHit = GameObject.COLLISION;
+
+//        if (!blueWall && !redWall) {
+//            if (this.UpPressed) {
+//                this.moveForwards();
+//            }
+//            if (this.DownPressed) {
+//                this.moveBackwards();
+//            }
+//        }
+//        if (blueWall){
+//            blueWall = false;
+//            System.out.println("This is blue wall");
+//            //GameObject.COLLISION = false;
+////            this.x = x-1;
+////            this.y = y-1;
+//            this.moveBackwards();
+//        }
+//        if (redWall){
+//            redWall = false;
+//            System.out.println("This is red wall");
+//            //GameObject.COLLISION = false;
+//            this.moveBackwards();
+//        }
+        this.collisionHandler.gotShot();
+//        if (wallHit) {
+//            this.collisionHandler.wallCollision();
+//            wallHit = false;
+//        }
+//        if (CollisionHandler.wall) {
+//            this.collisionHandler.wallCollision();
+//            CollisionHandler.setWall(false);
+//        }
+
         if (this.UpPressed) {
             this.moveForwards();
         }
@@ -140,22 +205,27 @@ public class Tank extends GameObject {
         if (this.ShootPressed && GameSetup.tick % 30 == 0) {
             this.shoot();
         }
-        if (blue_lifepoints == 0){
-            this.lives--;
+        if (this.blue_lifepoints == 0 && identifier == 2){
+            //lifepoints = 3;
+            lives--;
             blue_lifepoints = 3;
-            this.setX(400);
-            this.setY(400);
+            setX(400);
+            setY(400);
         }
-        if (red_lifepoints == 0){
-            this.lives--;
+        if (this.red_lifepoints == 0 && identifier == 1){
+            lives--;
             red_lifepoints = 3;
-            this.setX(100);
-            this.setY(100);
+            setX(100);
+            setY(100);
         }
 
         ammo.forEach(DefaultAmmo::update);
-        checkBulletCollision();
+        //checkBulletCollision();
 
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 
     private void rotateLeft() {
@@ -173,12 +243,12 @@ public class Tank extends GameObject {
     }
 
     public void moveBackwards() {
-        vx = (int) Math.round(R * Math.cos(Math.toRadians(angle)));
-        vy = (int) Math.round(R * Math.sin(Math.toRadians(angle)));
-        x -= vx;
-        y -= vy;
-        checkBorder();
-        hitbox.setLocation(x,y);
+            vx = (int) Math.round(R * Math.cos(Math.toRadians(angle)));
+            vy = (int) Math.round(R * Math.sin(Math.toRadians(angle)));
+            x -= vx;
+            y -= vy;
+            checkBorder();
+            hitbox.setLocation(x, y);
     }
 
     private void moveForwards() {
@@ -212,21 +282,62 @@ public class Tank extends GameObject {
     }
 
 
-    public void checkBulletCollision(){
+    public boolean checkBulletCollision(){
         Iterator itr = ammo.iterator();
         while(itr.hasNext()){
             DefaultAmmo bullet = (DefaultAmmo) itr.next();
-            if (bullet.checkBorder()) itr.remove();
-            if (bullet.collisionDetected(this)){
-                System.out.println("Hit me!");
+            if (bullet.checkBorder()){
                 itr.remove();
+                return true;
+            }
+            if (bullet.collisionDetected(this)){
+                System.out.println(lifepoints);
+                System.out.println(identifier);
+                //lifepoints--;
+                itr.remove();
+                return true;
+            }
+            if (CollisionHandler.wall){
+                itr.remove();
+                CollisionHandler.setWall(false);
+                return true;
             }
 
         } // end while
+        return false;
     } // end checkCollision
 
-//    public static void reduceLifePoints(){
-//        Tank.lifepoints--;
+//    public boolean checkBulletCollision(){
+//        for (DefaultAmmo bullet : ammo) {
+//            if (bullet.checkBorder()) {
+//                removeBullet();
+//                return true;
+//            }
+//            if (bullet.collisionDetected(this)) {
+//                System.out.println(lifepoints);
+//                System.out.println(identifier);
+//                removeBullet();
+//                //lifepoints--;
+//                return true;
+//            }
+//        }
+//
+//
+//        return false;
+//    } // end checkCollision
+//
+//    public void removeBullet(){
+//        Iterator itr = ammo.iterator();
+//        while(itr.hasNext()){
+//            DefaultAmmo bullet = (DefaultAmmo) itr.next();
+//            itr.remove();
+//        }
+//    }
+//    void fixCollision(Wall w){
+//        if(!w.collision()){
+//        } else {
+//            System.out.println("Beep");
+//        }
 //    }
 
     private void checkBorder() {

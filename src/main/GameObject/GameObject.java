@@ -7,6 +7,7 @@ public abstract class GameObject {
     int x, y;
     BufferedImage img;
     private Rectangle hitbox;
+    public static boolean COLLISION = false;
 
 
         public GameObject(int x_pos, int y_pos, BufferedImage image){

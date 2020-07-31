@@ -36,7 +36,7 @@ public class GameSetup extends JPanel implements Runnable {
     private Launcher lf;
     static long tick = 0;
     ArrayList<GameObject> gameObjects;
-    ArrayList<Tank> tanks;
+    public static ArrayList<Tank> tanks;
 
     public GameSetup(Launcher lf){
         this.lf = lf;
@@ -138,8 +138,8 @@ public class GameSetup extends JPanel implements Runnable {
             System.out.println(e);
         }
 
-        Tank t1 = new Tank(300, 300, 0, 0, 0, GameConstants.red_tank);
-        Tank t2 = new Tank(500, 500, 0, 0, 180, GameConstants.blue_tank);
+        Tank t1 = new Tank(300, 300, 0, 0, 0, GameConstants.red_tank, 1);
+        Tank t2 = new Tank(500, 500, 0, 0, 180, GameConstants.blue_tank, 2);
 
         this.sidePanel = new SidePanel(t1, t2);
 
@@ -148,6 +148,7 @@ public class GameSetup extends JPanel implements Runnable {
 
         this.gameObjects.add(t1);
         this.gameObjects.add(t2);
+        System.out.println(gameObjects.size());
         this.tanks.add(t1);
         this.tanks.add(t2);
         this.setBackground(Color.BLACK);

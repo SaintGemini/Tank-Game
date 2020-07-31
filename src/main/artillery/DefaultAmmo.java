@@ -80,11 +80,12 @@ public class DefaultAmmo extends GameObject {
         if (hitbox.intersects(t.hitbox)){
             if (t.getImg() == GameConstants.blue_tank){
                 Tank.red_lifepoints--;
-                System.out.println("Blue tank");
+                //System.out.println("Blue tank");
             } else {
                 Tank.blue_lifepoints--;
             }
-            System.out.println("doesnt burn");
+            //t.lifepoints--;
+            //System.out.println("doesnt burn");
             return true;
         }
         return false;
