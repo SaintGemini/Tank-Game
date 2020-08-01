@@ -77,7 +77,7 @@ public class DefaultAmmo extends GameObject {
     }
 
     public boolean collisionDetected(Tank t){
-        if (hitbox.intersects(t.hitbox)){
+        if (hitbox.intersects(t.getHitbox())){
             if (t.getImg() == GameConstants.blue_tank){
                 Tank.red_lifepoints--;
                 //System.out.println("Blue tank");

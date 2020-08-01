@@ -20,5 +20,5 @@ public abstract class GameObject {
         return  hitbox.getBounds();
     }
     public abstract void drawImage(Graphics g);
-    public abstract void update();
+    public abstract void update() throws InterruptedException;
 }

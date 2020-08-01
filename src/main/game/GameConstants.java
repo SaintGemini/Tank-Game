@@ -32,6 +32,9 @@ public class GameConstants {
     public static BufferedImage wallpaper = null;
     public static BufferedImage life = null;
     public static BufferedImage health = null;
+    public static BufferedImage background = null;
+    public static BufferedImage potion = null;
+    public static BufferedImage frog = null;
 
     static {
         try {
@@ -47,6 +50,9 @@ public class GameConstants {
             wallpaper = ImageIO.read(new File("src/resources/wallpaper.jpg"));
             life = ImageIO.read(new File("src/resources/heart2.png"));
             health = ImageIO.read(new File("src/resources/blood_red_bar2.png"));
+            background = ImageIO.read(new File("src/resources/background.jpg"));
+            potion = ImageIO.read(new File("src/resources/red-potion.png"));
+            frog = ImageIO.read(new File("src/resources/cutepixelfrog_16x16.gif"));
 
         } catch (IOException e) {
             e.printStackTrace();

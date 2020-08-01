@@ -9,9 +9,7 @@ package main.game;
 import main.GameObject.GameObject;
 import main.Launcher;
 import main.artillery.DefaultAmmo;
-import main.mapLayout.BreakableWall;
-import main.mapLayout.UnbreakableWall;
-import main.mapLayout.Wall;
+import main.mapLayout.*;
 import main.menus.SidePanel;
 
 import javax.swing.*;
@@ -51,8 +49,10 @@ public class GameSetup extends JPanel implements Runnable {
                    this.lf.setFrame("end");
                    return;
                }
-                this.gameObjects.forEach(GameObject::update);
-                this.sidePanel = new SidePanel(tanks.get(0), tanks.get(1));
+               for (GameObject gameObject : this.gameObjects) {
+                   gameObject.update();
+               }
+               this.sidePanel = new SidePanel(tanks.get(0), tanks.get(1));
                 this.repaint();   // redraw game
                 tick++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
@@ -127,9 +127,16 @@ public class GameSetup extends JPanel implements Runnable {
                         case "2":
                             this.gameObjects.add(new BreakableWall(curCol * 30, curRow * 30, GameConstants.breakable_wall));
                             break;
+                        case "6":
+                            this.gameObjects.add(new Potion(curCol * 30, curRow * 30, GameConstants.potion));
+                            break;
+                        case "7":
+                            this.gameObjects.add(new Jump(curCol * 30, curRow * 30, GameConstants.frog));
+                            break;
                         case "3":
                         case "9":
                             this.gameObjects.add(new UnbreakableWall(curCol * 30, curRow * 30, GameConstants.unbreakable_wall));
+
                     }
                 }
             }

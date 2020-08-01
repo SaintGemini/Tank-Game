@@ -16,6 +16,8 @@ public abstract class Wall extends GameObject {
     BufferedImage img;
     public Rectangle hitbox;
     private CollisionHandler collisionHandler;
+    private int lifepoints;
+    private boolean solid;
 
     public static Tank t1;
     public static Tank t2;
@@ -27,56 +29,60 @@ public abstract class Wall extends GameObject {
         this.img = image;
         this.hitbox = new Rectangle(x, y, this.img.getWidth(), this.img.getHeight());
         collisionHandler = new CollisionHandler(this);
-
+        this.lifepoints = 1;
+        this.solid = true;
 
 
     }
-//    public Rectangle getHitbox(){
-//        return hitbox.getBounds();
-//    }
 
-    public void update() {
-        //collision();
-//        if (this.getHitbox().intersects(Tank.hitbox)){
-////            if (Tank.dentifier == 2){
-////                Tank.blueWall = true;
-////            }
-////            else if (Tank.red_identifier == 1) {
-////                Tank.redWall = true;
-////            }
-//            //Tank.collisionHandler.wallCollision();
-////            GameObject.COLLISION = true;
-//            CollisionHandler.wall = true;
-//            System.out.println("Wall class recognizes Collision");
-//            //return true;
+
+    public void update() throws InterruptedException {
+        //System.out.println(solid);
+        if (solid) {
+            if (t1 != null && t2 != null) {
+                collisionHandler.WallClassCollision(t1);
+                collisionHandler.WallClassCollision(t2);
+            } else {
+                //System.out.println(CollisionHandler.wall);
+                t1 = (Tank) GameSetup.tanks.get(0);
+                t2 = (Tank) GameSetup.tanks.get(1);
+            }
+        }
+//        if (DefaultAmmo.hitbox == null){
+//
+//        } else if (this.getHitbox().intersects(DefaultAmmo.hitbox)){
+//            if (this instanceof BreakableWall){
+//                System.out.println("I'm a breakable wall;");
+//                lifepoints--;
+//                System.out.println(lifepoints);
+//            } else if (this instanceof UnbreakableWall) {
+//                System.out.println("I'm an unbreakable wall;");
+//            }
+//            CollisionHandler.setWall(true);
 //        }
 
 
 
-//        t2 = (Tank) GameSetup.gameObjects.get(189);
-//        t1 = (Tank) GameSetup.gameObjects.get(188);
-        if (t1 != null && t2 != null) {
-            collisionHandler.WallClassCollision(t1);
-            collisionHandler.WallClassCollision(t2);
-        } else {
-            //System.out.println(CollisionHandler.wall);
-            t1 = (Tank) GameSetup.tanks.get(0);
-            t2 = (Tank) GameSetup.tanks.get(1);
-        }
-        if (DefaultAmmo.hitbox == null){
+    }
 
-        } else if (this.getHitbox().intersects(DefaultAmmo.hitbox)){
-            if (this instanceof BreakableWall){
-                System.out.println("I'm a breakable wall;");
-            } else if (this instanceof UnbreakableWall) {
-                System.out.println("I'm an unbreakable wall;");
-            }
-            CollisionHandler.setWall(true);
-            //return true;
-        }
+    public int getLife(){
+        return this.lifepoints;
+    }
 
+    public void subLife(){
+        this.lifepoints--;
+    }
 
+    public boolean isSolid(){
+        return this.solid;
+    }
 
+    public void setSolid(boolean boo){
+        this.solid = boo;
+    }
+
+    public void setImg(BufferedImage image){
+        this.img = image;
     }
 
 //    public boolean collision(){

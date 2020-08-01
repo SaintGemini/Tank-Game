@@ -48,6 +48,7 @@ public class Tank extends GameObject {
     private boolean LeftPressed;
     private boolean ShootPressed;
 
+    private boolean jump;
     public static boolean wallHit = false;
     public static boolean blueWall = false;
     public static boolean redWall = false;
@@ -77,6 +78,7 @@ public class Tank extends GameObject {
         collisionHandler = new CollisionHandler(this);
         lifepoints = 3;
         lives = 3;
+        this.jump = false;
     }
 
 //    public Rectangle getHitbox() {
@@ -90,7 +92,12 @@ public class Tank extends GameObject {
 //        return  this.img;
 //    }
 
-
+    public void setJump(Boolean boo){
+        this.jump = boo;
+    }
+    public boolean getJump(){
+        return this.jump;
+    }
     public void setY(int y){ this.y = y;}
     public int getY() { return y; }
 
@@ -156,31 +163,10 @@ public class Tank extends GameObject {
             endGame = true;
         }
 
-        //this.wallHit = GameObject.COLLISION;
-
-//        if (!blueWall && !redWall) {
-//            if (this.UpPressed) {
-//                this.moveForwards();
-//            }
-//            if (this.DownPressed) {
-//                this.moveBackwards();
-//            }
-//        }
-//        if (blueWall){
-//            blueWall = false;
-//            System.out.println("This is blue wall");
-//            //GameObject.COLLISION = false;
-////            this.x = x-1;
-////            this.y = y-1;
-//            this.moveBackwards();
-//        }
-//        if (redWall){
-//            redWall = false;
-//            System.out.println("This is red wall");
-//            //GameObject.COLLISION = false;
-//            this.moveBackwards();
-//        }
         this.collisionHandler.gotShot();
+
+        //this.collisionHandler.gotShot();
+
 //        if (wallHit) {
 //            this.collisionHandler.wallCollision();
 //            wallHit = false;
@@ -282,29 +268,25 @@ public class Tank extends GameObject {
     }
 
 
-    public boolean checkBulletCollision(){
+    public void checkBulletCollision(){
         Iterator itr = ammo.iterator();
         while(itr.hasNext()){
             DefaultAmmo bullet = (DefaultAmmo) itr.next();
             if (bullet.checkBorder()){
                 itr.remove();
-                return true;
             }
             if (bullet.collisionDetected(this)){
                 System.out.println(lifepoints);
                 System.out.println(identifier);
                 //lifepoints--;
                 itr.remove();
-                return true;
             }
             if (CollisionHandler.wall){
                 itr.remove();
                 CollisionHandler.setWall(false);
-                return true;
             }
 
         } // end while
-        return false;
     } // end checkCollision
 
 //    public boolean checkBulletCollision(){
