@@ -8,7 +8,6 @@ package main.game;
 
 import main.GameObject.GameObject;
 import main.Launcher;
-import main.artillery.DefaultAmmo;
 import main.mapLayout.*;
 import main.menus.SidePanel;
 
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 public class GameSetup extends JPanel implements Runnable {
 
     private BufferedImage world;
-    private BufferedImage miniworld;
     private SidePanel sidePanel;
     private Launcher lf;
     static long tick = 0;
@@ -43,7 +41,7 @@ public class GameSetup extends JPanel implements Runnable {
     @Override
     public void run(){
        try {
-           //this.resetGame();
+           this.resetGame();
            while (true) {
                if (Tank.endGame) {
                    this.lf.setFrame("end");
@@ -56,14 +54,6 @@ public class GameSetup extends JPanel implements Runnable {
                 this.repaint();   // redraw game
                 tick++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
-                /*
-                 * simulate an end game event
-                 * we will do this with by ending the game when drawn 2000 frames have been drawn
-                 */
-//                if(this.tick > 2000){
-//                    this.lf.setFrame("end");
-//                    return;
-//                }
             }
        } catch (InterruptedException ignored) {
            System.out.println(ignored);
@@ -73,37 +63,27 @@ public class GameSetup extends JPanel implements Runnable {
     /**
      * Reset game to its initial state.
      */
-//    public void resetGame(){
-//        int count = 0;
-//        this.tick = 0;
-////        this.t1.setX(300);
-////        this.t1.setY(300);
-////        this.t2.setX(500);
-////        this.t2.setY(500);
-//        for(GameObject t : gameObjects){
-//            if (t instanceof Tank){
-//                if(count == 1){
-//                    ((Tank) t).setX(500);
-//                    ((Tank) t).setY(400);
-//                }
-//                count++;
-//                ((Tank) t).setX(300);
-//                ((Tank) t).setY(400);
-//            }
-//        }
-//    }
+    public void resetGame(){
+        this.tick = 0;
+        Tank.endGame = false;
+        for(GameObject t : gameObjects){
+            if (t instanceof Tank){
+                ((Tank) t).respawn();
+                ((Tank) t).lives = 3;
+                ((Tank) t).lifepoints = 3;
+            }
+        }
+    }
 
 
     /**
      * Load all resources for Tank Wars Game. Set all Game Objects to their
      * initial state as well.
      */
-    public void gameInitialize() throws IOException {
+    public void gameInitialize() {
         this.world = new BufferedImage(GameConstants.GAME_SCREEN_WIDTH,
                                        GameConstants.GAME_SCREEN_HEIGHT,
                                        BufferedImage.TYPE_INT_RGB);
-
-        //sidePanel.drawLifePoints();
 
         try {
             gameObjects = new ArrayList<>();
@@ -148,8 +128,8 @@ public class GameSetup extends JPanel implements Runnable {
             System.out.println(e);
         }
 
-        Tank t1 = new Tank(300, 300, 0, 0, 0, GameConstants.red_tank, 1);
-        Tank t2 = new Tank(500, 500, 0, 0, 180, GameConstants.blue_tank, 2);
+        Tank t1 = new Tank(75, 75, 0, 0, 0, GameConstants.red_tank, 1);
+        Tank t2 = new Tank(1150, 550, 0, 0, 180, GameConstants.blue_tank, 2);
 
         this.sidePanel = new SidePanel(t1, t2);
 
@@ -159,8 +139,8 @@ public class GameSetup extends JPanel implements Runnable {
         this.gameObjects.add(t1);
         this.gameObjects.add(t2);
         System.out.println(gameObjects.size());
-        this.tanks.add(t1);
-        this.tanks.add(t2);
+        tanks.add(t1);
+        tanks.add(t2);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc1);
         this.lf.getJf().addKeyListener(tc2);

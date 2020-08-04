@@ -2,6 +2,7 @@ package main.menus;
 
 import main.game.GameConstants;
 import main.Launcher;
+import main.game.GameSetup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,7 @@ public class EndGamePanel extends JPanel {
         start.setBounds(150,300,175,50);
         start.addActionListener((actionEvent -> {
             this.lf.setFrame("game");
+            //GameSetup.resetGame();
         }));
 
 

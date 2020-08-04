@@ -145,6 +145,7 @@ public class Tank extends GameObject {
         if (lifepoints <= 0) {
             lifepoints = 3;
             lives--;
+            respawn();
         }
 
         ammo.forEach(Ammo::update);
@@ -155,6 +156,8 @@ public class Tank extends GameObject {
     public void setX(int x) {
         this.x = x;
     }
+    public void setY(int y) { this.y = y; }
+    public void setAngle(int angle) { this.angle = angle; }
 
     private void rotateLeft() {
         if (this.angle <= -360) {
@@ -272,6 +275,18 @@ public class Tank extends GameObject {
 
     public BufferedImage getImg() {
         return img;
+    }
+
+    public void respawn(){
+        if (this.identifier == 1){
+            this.setX(55);
+            this.setY(55);
+        }
+        if (this.identifier == 2){
+            this.setX(1150);
+            this.setY(550);
+            this.setAngle(180);
+        }
     }
 
     @Override
