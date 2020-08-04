@@ -26,8 +26,8 @@ public class SidePanel extends JPanel {
         g2 = sidePanel.createGraphics();
         g2.drawImage(GameConstants.red_tank, 0, 0, null);
         g2.drawImage(GameConstants.blue_tank, 0, 150, null);
-        drawLifePoints(t1, t1.lives, t1.red_lifepoints);
-        drawLifePoints(t2, t2.lives, t2.blue_lifepoints);
+        drawLifePoints(t1, t1.lives, t1.lifepoints);
+        drawLifePoints(t2, t2.lives, t2.lifepoints);
     }
 
 

@@ -1,7 +1,9 @@
 package main.artillery;
 
 import main.GameObject.GameObject;
+import main.collision.CollisionHandler;
 import main.game.GameConstants;
+import main.game.GameSetup;
 import main.game.Tank;
 import main.mapLayout.UnbreakableWall;
 import main.mapLayout.Wall;
@@ -10,12 +12,19 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+
+
 public class DefaultAmmo extends GameObject {
     // instance variables
     int x_pos, y_pos, x_vel, y_vel, fire_angle;
     int R = 5;
     BufferedImage img;
     public static Rectangle hitbox;
+    private static boolean hit;
+
+    public static Tank t1 = (Tank) GameSetup.tanks.get(0);
+    public static Tank t2 = (Tank) GameSetup.tanks.get(1);
+
 
     // constructor
     public DefaultAmmo(int x_position, int y_position, int angle, BufferedImage image){
@@ -25,6 +34,8 @@ public class DefaultAmmo extends GameObject {
         fire_angle = angle;
         img = image;
         hitbox = new Rectangle(x_pos, y_pos, this.img.getWidth(), this.img.getHeight());
+        hit = false;
+
     }
 
     void setX_pos(int x) {
@@ -47,6 +58,14 @@ public class DefaultAmmo extends GameObject {
         img = image;
     }
 
+    public void setHit(boolean boo){
+        hit = boo;
+    }
+
+    public boolean getHit(){
+        return hit;
+    }
+
     public void moveForwards() {
         x_vel = (int) Math.round(R * Math.cos(Math.toRadians(fire_angle)));
         y_vel = (int) Math.round(R * Math.sin(Math.toRadians(fire_angle)));
@@ -56,7 +75,6 @@ public class DefaultAmmo extends GameObject {
     }
 
     public void update(){
-
         moveForwards();
     }
 
@@ -76,20 +94,23 @@ public class DefaultAmmo extends GameObject {
         return false;
     }
 
-    public boolean collisionDetected(Tank t){
-        if (hitbox.intersects(t.getHitbox())){
-            if (t.getImg() == GameConstants.blue_tank){
-                Tank.red_lifepoints--;
-                //System.out.println("Blue tank");
-            } else {
-                Tank.blue_lifepoints--;
-            }
-            //t.lifepoints--;
-            //System.out.println("doesnt burn");
-            return true;
-        }
-        return false;
-    }
+//    public boolean collisionDetected(Tank t){
+//        if (this.getHitbox().intersects(t.hitbox)){
+//            if (t.getImg() == GameConstants.blue_tank){
+//                System.out.println("Red Tank was shot");
+//                //Tank.red_lifepoints--;
+//                //System.out.println("Blue tank");
+//            } else {
+//                System.out.println("Blue Tank was shot");
+//                //Tank.blue_lifepoints--;
+//            }
+//            //t.lifepoints--;
+//            //System.out.println("doesnt burn");
+//            System.out.println("Tank: " + t.identifier + " was shot.");
+//            return true;
+//        }
+//        return false;
+//    }
 
     public void drawImage(Graphics g) {
         AffineTransform rotation = AffineTransform.getTranslateInstance(x_pos, y_pos);
