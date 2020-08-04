@@ -127,6 +127,9 @@ public class GameSetup extends JPanel implements Runnable {
                         case "2":
                             this.gameObjects.add(new BreakableWall(curCol * 30, curRow * 30, GameConstants.breakable_wall));
                             break;
+                        case "5":
+                            this.gameObjects.add(new Lightning(curCol * 30, curRow * 30, GameConstants.lightning_wall));
+                            break;
                         case "6":
                             this.gameObjects.add(new Potion(curCol * 30, curRow * 30, GameConstants.potion));
                             break;

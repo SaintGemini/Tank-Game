@@ -1,6 +1,8 @@
 package main.collision;
 
+import main.artillery.Ammo;
 import main.artillery.DefaultAmmo;
+import main.artillery.LightningRound;
 import main.game.GameConstants;
 import main.game.Tank;
 import main.mapLayout.*;
@@ -14,6 +16,7 @@ public class CollisionHandler {
 
     public static boolean wall = false;
     public static boolean shot;
+    public static boolean lightning_round = false;
 
     public CollisionHandler(Tank t) {
         this.t = t;
@@ -26,14 +29,17 @@ public class CollisionHandler {
     }
 
     public void bulletCollision() {
-            if (DefaultAmmo.hitbox == null) {
+            if (Ammo.hitbox == null) {
             } else {
-                    if (DefaultAmmo.hitbox.intersects(t.getHitbox())) {
+                    if (Ammo.hitbox.intersects(t.getHitbox())) {
                         System.out.println(t.identifier);
                         setShot(true);
-                        DefaultAmmo.hitbox = new Rectangle();
-                        t.lifepoints--;
-
+                        Ammo.hitbox = new Rectangle();
+                        if (!lightning_round) {
+                            t.lifepoints--;
+                        } else {
+                            t.lifepoints -= 2;
+                        }
                         //t.checkBulletCollision();
 
                     }
@@ -76,12 +82,30 @@ public class CollisionHandler {
                     5000
             );
         }
+        // if tank picks up lightning rounds
+        if (w.getHitbox().intersects(t.hitbox) && w instanceof Lightning && !((Lightning) w).isPickedUp()) {
+            ((Lightning) w).setPickedUp(true);
+            t.setLightingRoundsActivated(true);
+            lightning_round = true;
+            w.setImg(GameConstants.background);
+            // wait 5 seconds then turn jump power up off
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            t.setLightingRoundsActivated(false);
+                            lightning_round = false;
+                        }
+                    },
+                    10000
+            );
+        }
         // if there are no bullets, do nothing
-        if (DefaultAmmo.hitbox == null) {
+        if (Ammo.hitbox == null) {
 
         } else {
             // if bullet collides with wall
-            if (w.getHitbox().intersects(DefaultAmmo.hitbox)) {
+            if (w.getHitbox().intersects(Ammo.hitbox)) {
                 // if breakable wall
                 if (w instanceof BreakableWall) {
                     // wall no longer solid

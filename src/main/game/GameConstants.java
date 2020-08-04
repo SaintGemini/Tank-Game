@@ -27,6 +27,9 @@ public class GameConstants {
 
     public static BufferedImage blue_missile = null;
     public static BufferedImage red_missile = null;
+    public static BufferedImage missile = null;
+    public static BufferedImage lightningRound = null;
+
     public static BufferedImage unbreakable_wall = null;
     public static BufferedImage breakable_wall = null;
     public static BufferedImage wallpaper = null;
@@ -35,6 +38,7 @@ public class GameConstants {
     public static BufferedImage background = null;
     public static BufferedImage potion = null;
     public static BufferedImage frog = null;
+    public static BufferedImage lightning_wall = null;
 
     static {
         try {
@@ -44,6 +48,7 @@ public class GameConstants {
             red_tank = ImageIO.read((new File("src/resources/red_tank.png")));
             red_tank2 = ImageIO.read((new File("src/resources/red_tank2.png")));
             blue_missile = ImageIO.read((new File("src/resources/blue_missile.jpg")));
+            missile = ImageIO.read((new File("src/resources/spr_missile_.png")));
             red_missile = ImageIO.read((new File("src/resources/red_missile.jpg")));
             unbreakable_wall = ImageIO.read(new File( "src/resources/unbreakable_wall.jpg"));
             breakable_wall = ImageIO.read(new File("src/resources/breakable_wall.jpg"));
@@ -53,6 +58,8 @@ public class GameConstants {
             background = ImageIO.read(new File("src/resources/background.jpg"));
             potion = ImageIO.read(new File("src/resources/red-potion.png"));
             frog = ImageIO.read(new File("src/resources/cutepixelfrog_16x16.gif"));
+            lightning_wall = ImageIO.read(new File("src/resources/lightning_wall.png"));
+            lightningRound = ImageIO.read(new File("src/resources/lightning.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
