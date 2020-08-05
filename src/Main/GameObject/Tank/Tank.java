@@ -41,7 +41,7 @@ public class Tank extends GameObject {
     private boolean LeftPressed;
     private boolean ShootPressed;
 
-    public boolean wallCollision;
+    private boolean collision;
     private boolean bulletLoaded;
     private boolean jump;
     private boolean lightingRoundsActivated;
@@ -58,12 +58,12 @@ public class Tank extends GameObject {
         ammo = new ArrayList<>();
         this.identifier = identifier;
         collisionHandler = new CollisionHandler(this);
-        lifepoints = 3;
-        lives = 3;
+        this.lifepoints = 3;
+        this.lives = 3;
         this.jump = false;
         this.lightingRoundsActivated = false;
         this.bulletLoaded = true;
-        this.wallCollision = false;
+        this.collision = false;
     }
 
     // ------------------getters and setters----------------------
@@ -78,9 +78,8 @@ public class Tank extends GameObject {
     }
     public void setY(int y) { this.y = y; }
     public void setAngle(int angle) { this.angle = angle; }
-
-    public Rectangle getHitbox() {
-        return hitbox.getBounds();
+    public BufferedImage getImg() {
+        return img;
     }
 
     public boolean getJump() {
@@ -89,7 +88,6 @@ public class Tank extends GameObject {
     public void setJump(Boolean boo) {
         this.jump = boo;
     }
-
     public void setLightingRoundsActivated(boolean boo) {
         this.lightingRoundsActivated = boo;
     }
@@ -97,8 +95,12 @@ public class Tank extends GameObject {
     public boolean getBulletLoaded(){
         return this.bulletLoaded;
     }
-    public void setBulletLoaded(Boolean boo){
+    public void setBulletLoaded(boolean boo){
         this.bulletLoaded = boo;
+    }
+
+    public void setCollision(boolean boo){
+        this.collision = boo;
     }
     // ----------------end getters and setters---------------------
 
@@ -148,8 +150,11 @@ public class Tank extends GameObject {
             System.out.println("Game over");
             endGame = true;
         }
-        // if not colliding with wall
-        if (!wallCollision) {
+
+        collisionHandler.update();
+
+        // if not collision
+        if (!collision) {
             if (this.UpPressed) {
                 this.moveForwards();
             }
@@ -157,7 +162,7 @@ public class Tank extends GameObject {
                 this.moveBackwards();
             }
         }
-        // if colliding with wall
+        // if collision
         else {
             if (this.UpPressed) {
                 this.moveBackwards();
@@ -168,7 +173,7 @@ public class Tank extends GameObject {
                 this.moveForwards();
             }
             hitbox.setLocation(x-1, y-1);
-            this.wallCollision = false;
+            this.collision = false;
         }
         if (this.LeftPressed) {
             this.rotateLeft();
@@ -240,48 +245,89 @@ public class Tank extends GameObject {
     // when shoot is pressed, add bullet to ammo
     private void shoot() {
         Ammo bullet;
-        // if pointing right
-        if ((int) angle >= 0 && (int) angle < 45 || (int) angle > 315 && (int) angle <= 359 ||
-                (int) angle < 0 && (int) angle >= -45 || (int) angle <= -315 && (int) angle >= -359) {
-
+        // if pointing east
+        if ((int) angle >= 0 && (int) angle < 30 || (int) angle >= 330 && (int) angle <= 360 ||
+                (int) angle < 0 && (int) angle >= -30 || (int) angle <= -330 && (int) angle >= -360) {
             if(lightingRoundsActivated){
-                bullet = new LightningRound(x + 60, y, (int) angle, GameConstants.lightningRound);
+                bullet = new LightningRound(x + this.img.getWidth() + 15, y + 3, (int) angle, GameConstants.lightningRound);
             } else {
-                bullet = new DefaultAmmo(x + 81, y + 5, (int) angle, GameConstants.missile);
+                bullet = new DefaultAmmo(x + 56, y + 10, (int) angle, GameConstants.missile);
             }
             ammo.add(bullet);
         }
-        // if pointing down
-        else if ((int) angle >= 45 && (int) angle <= 135 ||
-                (int) angle <= -225 && (int) angle > -315) {
+        // if pointing southeast
+        else if ((int) angle >= 30 && (int) angle < 60 || (int) angle > 330 && (int) angle <= 300){
+            if(lightingRoundsActivated){
+                bullet = new LightningRound(x + this.img.getWidth() + 15, y + this.img.getHeight(), (int) angle, GameConstants.lightningRound);
+            } else {
+                bullet = new DefaultAmmo(x + 56, y + this.img.getHeight(), (int) angle, GameConstants.missile);
+            }
+            ammo.add(bullet);
+        }
+
+        // if pointing south
+        else if ((int) angle >= 60 && (int) angle < 120 ||
+                (int) angle <= -240 && (int) angle > -300) {
             if (lightingRoundsActivated){
                 bullet = new LightningRound(x, y + 35, (int) angle, GameConstants.lightningRound);
             } else {
-                bullet = new DefaultAmmo(x + 25, y + 36, (int) angle, GameConstants.missile);
+                bullet = new DefaultAmmo(x + 8, y + 36, (int) angle, GameConstants.missile);
             }
 
             ammo.add(bullet);
         }
-        // if pointing left
-        else if ((int) angle > 135 && (int) angle <= 225 ||
-                (int) angle <= -135 && (int) angle > -225) {
+        // if pointing southwest
+        else if((int) angle >= 120 && (int) angle < 150 ||
+                (int) angle >= -240 && (int) angle < -210){
+            // TODO
+            if (lightingRoundsActivated){
+                bullet = new LightningRound(x - 60, y + 30, (int) angle, GameConstants.lightningRound);
+            } else {
+                bullet = new DefaultAmmo(x - 25, y + 45, (int) angle, GameConstants.missile);
+            }
+
+            ammo.add(bullet);
+        }
+        // if pointing west
+        else if ((int) angle >= 150 && (int) angle < 210 ||
+                (int) angle >= -210 && (int) angle < -150) {
             if (lightingRoundsActivated) {
                 bullet = new LightningRound(x -60 , y, (int) angle, GameConstants.lightningRound);
             } else {
-                bullet = new DefaultAmmo(x - 30, y + 15, (int) angle, GameConstants.missile);
+                bullet = new DefaultAmmo(x - 30, y + 10, (int) angle, GameConstants.missile);
             }
-
             ammo.add(bullet);
         }
-        // if pointing up
-        else if ((int) angle > 225 && (int) angle <= 315 ||
-                (int) angle <= -45 && (int) angle > -135) {
+        // if pointing northwest
+        else if ((int) angle >= 210 && (int) angle < 240 ||
+                (int) angle >= -150 && (int) angle < -120){
+            // TODO
+            if (lightingRoundsActivated) {
+                bullet = new LightningRound(x - 60 , y-30, (int) angle, GameConstants.lightningRound);
+            } else {
+                bullet = new DefaultAmmo(x - 30, y - 15, (int) angle, GameConstants.missile);
+            }
+            ammo.add(bullet);
+        }
+        // if pointing north
+        else if ((int) angle >= 240 && (int) angle < 300 ||
+                (int) angle >= -120 && (int) angle < -60) {
             if (lightingRoundsActivated){
                 bullet = new LightningRound(x , y - 30, (int) angle, GameConstants.lightningRound);
             } else {
-                bullet = new DefaultAmmo(x + 25, y - 30, (int) angle, GameConstants.missile);
+                bullet = new DefaultAmmo(x + 10, y - 30, (int) angle, GameConstants.missile);
             }
-
+            ammo.add(bullet);
+        }
+        // if pointing northeast
+        else if ((int) angle >= 300 && (int) angle < 330 ||
+                (int) angle >= -60 && (int) angle < -30){
+            // TODO
+            if(lightingRoundsActivated){
+                bullet = new LightningRound(x + this.img.getWidth() + 15, y - 40, (int) angle, GameConstants.lightningRound);
+            } else {
+                bullet = new DefaultAmmo(x + 52, y - 10, (int) angle, GameConstants.missile);
+            }
             ammo.add(bullet);
         }
 
@@ -325,9 +371,8 @@ public class Tank extends GameObject {
         }
     }
 
-    public BufferedImage getImg() {
-        return img;
-    }
+
+
     // respawns tanks to their respective spawn zone
     public void respawn(){
         // for red tank

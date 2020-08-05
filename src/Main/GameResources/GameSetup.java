@@ -13,8 +13,7 @@ import Main.Launcher;
 import Main.MapResources.*;
 import Main.Menus.SidePanel;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;

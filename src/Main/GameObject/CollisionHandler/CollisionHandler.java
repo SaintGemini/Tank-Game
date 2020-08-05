@@ -3,6 +3,7 @@ package Main.GameObject.CollisionHandler;
 import Main.GameObject.Artillery.Ammo;
 import Main.GameResources.GameConstants;
 import Main.GameObject.Tank.Tank;
+import Main.GameResources.GameSetup;
 import Main.MapResources.*;
 
 import java.awt.*;
@@ -26,6 +27,20 @@ public class CollisionHandler {
 
     }
 
+    public void update(){
+        // if tanks collide with each other
+        if (GameSetup.tanks != null){
+            Tank one = GameSetup.tanks.get(0);
+            Tank two = GameSetup.tanks.get(1);
+            if(one.getHitbox().intersects(two.getHitbox())){
+                // collision is true
+                t.setCollision(true);
+            }
+        } else {
+            // do nothing
+        }
+    }
+
     //check bullet -> tank collision
     public void checkBulletCollision() {
             // if no bullets
@@ -33,7 +48,7 @@ public class CollisionHandler {
                 // do nothing (handles null pointer exception)
             } else {
                     // if bullet collides with tank
-                    if (Ammo.hitbox.intersects(t.getHitbox())) {
+                    if (Ammo.hitbox.intersects(t.hitbox)) {
                         // was shot is true
                         setWasShot(true);
                         // resets hitbox to ensure collision only happens once
@@ -58,9 +73,9 @@ public class CollisionHandler {
         if (!t.getJump()) {
             // if tank runs into wall
             if (w.getHitbox().intersects(t.hitbox) && w.isSolid()) {
-                // set wall collision state for tank to true
+                // set collision state for tank to true
                 // this is handled in Tank update function
-                t.wallCollision = true;
+                t.setCollision(true);
             }
         }
         // if tank picks up potion

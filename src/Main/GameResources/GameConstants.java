@@ -21,10 +21,8 @@ public class GameConstants {
     public static final int END_MENU_SCREEN_WIDTH = 500;
     public static final int END_MENU_SCREEN_HEIGHT = 500;
     public static Image startImage = null;
-    public static Image tankImage = null;
     public static BufferedImage blue_tank = null;
     public static BufferedImage red_tank = null;
-    public static BufferedImage red_tank2 = null;
 
     public static BufferedImage missile = null;
     public static BufferedImage lightningRound = null;
@@ -44,10 +42,8 @@ public class GameConstants {
     static {
         try {
             startImage = ImageIO.read(new File("src/resources/title.png"));
-            tankImage = ImageIO.read(new File("src/resources/tank1.png"));
             blue_tank = ImageIO.read((new File("src/resources/blue_tank.png")));
             red_tank = ImageIO.read((new File("src/resources/red_tank.png")));
-            red_tank2 = ImageIO.read((new File("src/resources/red_tank2.png")));
             missile = ImageIO.read((new File("src/resources/spr_missile_.png")));
             unbreakable_wall = ImageIO.read(new File( "src/resources/unbreakable_wall.jpg"));
             breakable_wall = ImageIO.read(new File("src/resources/breakable_wall.jpg"));

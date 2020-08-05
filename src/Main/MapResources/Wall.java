@@ -15,8 +15,8 @@ public abstract class Wall extends GameObject {
     private CollisionHandler collisionHandler;
     private boolean solid;
 
-    public static Tank t1;
-    public static Tank t2;
+    private static Tank t1;
+    private static Tank t2;
 
     Wall(int x,int y, BufferedImage image){
         super(x, y, image);
@@ -55,14 +55,6 @@ public abstract class Wall extends GameObject {
 
     public void setImg(BufferedImage image){
         this.img = image;
-    }
-
-    public int getX(){
-        return this.x;
-    }
-
-    public int getY(){
-        return this.y;
     }
 
     public void drawImage(Graphics g){
