@@ -42,7 +42,5 @@ public class Ammo extends GameObject {
         rotation.rotate(Math.toRadians(fire_angle), this.img.getWidth() / 2.0, this.img.getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.img, rotation, null);
-        g2d.setColor(Color.BLUE);
-        g2d.drawRect(x_pos, y_pos, this.img.getWidth(), this.img.getHeight());
     }
 }

@@ -402,10 +402,6 @@ public class Tank extends GameObject {
         rotation.rotate(Math.toRadians(angle), this.img.getWidth() / 2.0, this.img.getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.img, rotation, null);
-        g2d.setPaint(Color.BLUE);
-        //g2d.draw(rot.createTransformedShape(this.hitbox));
-        g2d.draw(hitbox);
         this.ammo.forEach(DefaultAmmo -> DefaultAmmo.drawImage(g));
-        g2d.setColor(Color.RED);
     }
 }
