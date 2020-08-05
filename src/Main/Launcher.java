@@ -107,26 +107,26 @@ public class Launcher {
         this.jf.dispatchEvent(new WindowEvent(this.jf, WindowEvent.WINDOW_CLOSING));
     }
 
-    static void PlaySound(File Sound){
-        try {
-            if (Sound.exists()) {
-                System.out.println("I am running");
-                Clip clip = AudioSystem.getClip();
-                clip.open(AudioSystem.getAudioInputStream(Sound));
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            } else {
-                System.out.println("Can't find file");
-            }
-        } catch (Exception e){
-
-        }
-    }
+//    static void PlaySound(File Sound){
+//        try {
+//            if (Sound.exists()) {
+//                System.out.println("I am running");
+//                Clip clip = AudioSystem.getClip();
+//                clip.open(AudioSystem.getAudioInputStream(Sound));
+//                clip.start();
+//                clip.loop(Clip.LOOP_CONTINUOUSLY);
+//            } else {
+//                System.out.println("Can't find file");
+//            }
+//        } catch (Exception e){
+//
+//        }
+//    }
 
 
     public static void main(String[] args) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-        File mainSound = new File("src/resources/acid_tanks.wav");
-        PlaySound(mainSound);
+//        File mainSound = new File("src/resources/acid_tanks.wav");
+//        PlaySound(mainSound);
         Launcher launch = new Launcher();
         launch.initUIComponents();
     }

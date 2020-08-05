@@ -17,15 +17,9 @@ public class StartMenuPanel extends JPanel {
 
     public StartMenuPanel(Launcher lf) {
         this.lf = lf;
-//        try {
-            //menuBackground = ImageIO.read(this.getClass().getClassLoader().getResource("./resources/title.png"));
-            menuBackground = (BufferedImage) GameConstants.startImage;
-//        } catch (IOException e) {
-//            System.out.println("Error cant read menu background");
-//            e.printStackTrace();
-//            System.exit(-3);
-//        }
-        this.setBackground(Color.BLACK);
+
+        menuBackground = GameConstants.startImage;
+        //this.setBackground(Color.BLACK);
         this.setLayout(null);
 
         start = new JButton("Start");

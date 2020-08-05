@@ -1,11 +1,16 @@
 package Main.GameResources;
 
+import Main.Launcher;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
+
+import static javax.imageio.ImageIO.read;
 
 public class GameConstants {
     public static final int SCREEN_WIDTH = 1575;
@@ -20,7 +25,7 @@ public class GameConstants {
 
     public static final int END_MENU_SCREEN_WIDTH = 500;
     public static final int END_MENU_SCREEN_HEIGHT = 500;
-    public static Image startImage = null;
+    public static BufferedImage startImage = null;
     public static BufferedImage blue_tank = null;
     public static BufferedImage red_tank = null;
 
@@ -37,26 +42,26 @@ public class GameConstants {
     public static BufferedImage frog = null;
     public static BufferedImage lightning_wall = null;
 
-    public static FileInputStream fs = null;
+    //public static FileInputStream fs = null;
 
     static {
         try {
-            startImage = ImageIO.read(new File("src/resources/title.png"));
-            blue_tank = ImageIO.read((new File("src/resources/blue_tank.png")));
-            red_tank = ImageIO.read((new File("src/resources/red_tank.png")));
-            missile = ImageIO.read((new File("src/resources/spr_missile_.png")));
-            unbreakable_wall = ImageIO.read(new File( "src/resources/unbreakable_wall.jpg"));
-            breakable_wall = ImageIO.read(new File("src/resources/breakable_wall.jpg"));
-            wallpaper = ImageIO.read(new File("src/resources/wallpaper.jpg"));
-            life = ImageIO.read(new File("src/resources/heart2.png"));
-            health = ImageIO.read(new File("src/resources/blood_red_bar2.png"));
-            background = ImageIO.read(new File("src/resources/background.jpg"));
-            potion = ImageIO.read(new File("src/resources/red-potion.png"));
-            frog = ImageIO.read(new File("src/resources/cutepixelfrog_16x16.gif"));
-            lightning_wall = ImageIO.read(new File("src/resources/lightning_wall.png"));
-            lightningRound = ImageIO.read(new File("src/resources/lightning.png"));
+            startImage = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("title.png")));
+            blue_tank = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("blue_tank.png")));
+            red_tank = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("red_tank.png")));
+            missile = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("spr_missile_.png")));
+            unbreakable_wall = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("unbreakable_wall.jpg")));
+            breakable_wall = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("breakable_wall.jpg")));
+            wallpaper = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("wallpaper.jpg")));
+            life = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("heart2.png")));
+            health = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("blood_red_bar2.png")));
+            background = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("background.jpg")));
+            potion = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("red-potion.png")));
+            frog = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("cutepixelfrog_16x16.gif")));
+            lightning_wall = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("lightning_wall.png")));
+            lightningRound = read(Objects.requireNonNull(Launcher.class.getClassLoader().getResource("lightning.png")));
 
-            fs = new FileInputStream("./src/resources/acid_tanks.wav");
+            //fs = new FileInputStream("src/resources/acid_tanks.wav");
 
         } catch (IOException e) {
             e.printStackTrace();
